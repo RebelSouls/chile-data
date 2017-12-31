@@ -1,42 +1,41 @@
 plugins {
-	id "com.jfrog.bintray" version "1.7.3"
 	id 'net.researchgate.release' version '2.4.0'
 }
 
 apply plugin: 'java-library'
-apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 repositories {
-    jcenter()
-	maven { url "https://dl.bintray.com/jorjazo/RebelSouls" }
-}
-
-group = 'io.rebelsouls'
-version = '1.0'
-
-bintray {
-	user = System.getenv('BINTRAY_USER')
-	key = System.getenv('BINTRAY_KEY')
-	pkg {
-		repo = 'RebelSouls'
-		name = 'chile-data'
-//		userOrg = 'bintray_user'
-		licenses = ['LGPL-3.0']
-		vcsUrl = 'https://github.com/jorjazo/chile-data.git'
+	jcenter()
+	maven {
+		url 'https://mymavenrepo.com/repo/RsIzk5ozSSaqZE2h2UZJ/'
 	}
 }
 
 publishing {
+	repositories {
+		maven {
+			url repoWriteUrl
+			credentials {
+				username repoWriteUser
+				password repoWritePassword
+			}
+		}
+	}
+
 	publications {
-		javaLib(MavenPublication) {
+		mavenJava(MavenPublication) {
 			from components.java
-			groupId 'io.rebelsouls'
-			artifactId 'chile-data'
-//			version '1.1'
 		}
 	}
 }
+
+jar {
+	from sourceSets.main.allSource
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 dependencies {
 	compileOnly 'org.projectlombok:lombok:1.16.18'
